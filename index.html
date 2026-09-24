@@ -86,7 +86,6 @@
             inset -20px -20px 50px rgba(200, 160, 60, 0.4);
         }
       }
-      /* 陨石坑 */
       .moon::before,
       .moon::after {
         content: "";
@@ -108,7 +107,6 @@
         left: 60%;
       }
 
-      /* 月亮光环 */
       .moon-halo {
         position: absolute;
         inset: -40px;
@@ -144,7 +142,6 @@
         }
       }
 
-      /* 流星 */
       .shooting-star {
         position: fixed;
         width: 2px;
@@ -189,7 +186,6 @@
         margin: 0 auto;
       }
 
-      /* 标题 */
       .hero-title {
         text-align: center;
         margin-bottom: 20px;
@@ -219,7 +215,6 @@
         font-size: 2.2rem;
       }
 
-      /* 打字机 */
       .typewriter {
         text-align: center;
         font-size: 1rem;
@@ -244,7 +239,6 @@
         }
       }
 
-      /* 分隔线 */
       .divider {
         display: flex;
         align-items: center;
@@ -434,7 +428,6 @@
         opacity: 1;
       }
 
-      /* 情书页背景星星 */
       .love-page::before {
         content: "";
         position: absolute;
@@ -499,7 +492,6 @@
         box-shadow: 0 0 30px rgba(255, 220, 120, 0.5);
       }
 
-      /* 情书图片带光环 */
       .love-photo-wrap {
         position: relative;
         width: 100%;
@@ -589,7 +581,6 @@
         display: none;
       }
 
-      /* 翻页 */
       .nav-btns {
         display: flex;
         gap: 16px;
@@ -657,7 +648,7 @@
         }
       }
 
-      /* ===== 桂花雨/花瓣 ===== */
+      /* ===== 花瓣 ===== */
       .petal {
         position: fixed;
         top: -30px;
@@ -680,7 +671,7 @@
       /* ===== 结尾彩蛋 ===== */
       .ending {
         text-align: center;
-        padding: 60px 20px;
+        padding: 60px 20px 20px;
         margin-top: 40px;
         position: relative;
       }
@@ -707,6 +698,249 @@
         letter-spacing: 3px;
         line-height: 2;
       }
+
+      /* ===== 长信按钮 ===== */
+      .letter-btn {
+        padding: 18px 48px;
+        font-size: 1.05rem;
+        letter-spacing: 3px;
+        color: #1a1a2e;
+        background: linear-gradient(135deg, #fff4c2, #ffd966, #f5c842);
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow:
+          0 0 40px rgba(255, 220, 120, 0.5),
+          0 8px 24px rgba(0, 0, 0, 0.4);
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+        overflow: hidden;
+        font-family: inherit;
+      }
+      .letter-btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          120deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.7) 50%,
+          transparent 70%
+        );
+        transform: translateX(-100%);
+        transition: transform 0.8s;
+      }
+      .letter-btn:hover {
+        transform: translateY(-4px) scale(1.05);
+        box-shadow:
+          0 0 60px rgba(255, 220, 120, 0.8),
+          0 12px 32px rgba(0, 0, 0, 0.5);
+      }
+      .letter-btn:hover::before {
+        transform: translateX(100%);
+      }
+
+      /* ===== 信纸页 ===== */
+      .letter-page {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          circle at 50% 20%,
+          #1e1e3a 0%,
+          #0a0a18 60%,
+          #05050f 100%
+        );
+        z-index: 2000;
+        display: none;
+        overflow-y: auto;
+        padding: 80px 20px 60px;
+        opacity: 0;
+        transition: opacity 0.6s ease;
+      }
+      .letter-page.active {
+        display: block;
+        opacity: 1;
+      }
+
+      .letter-page::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          radial-gradient(
+            2px 2px at 15% 25%,
+            rgba(255, 255, 255, 0.5),
+            transparent
+          ),
+          radial-gradient(
+            1px 1px at 75% 15%,
+            rgba(255, 255, 255, 0.4),
+            transparent
+          ),
+          radial-gradient(
+            1px 1px at 45% 75%,
+            rgba(255, 255, 255, 0.3),
+            transparent
+          ),
+          radial-gradient(
+            2px 2px at 85% 60%,
+            rgba(255, 255, 255, 0.5),
+            transparent
+          );
+        pointer-events: none;
+        animation: twinkle 3s infinite alternate;
+      }
+
+      .letter-paper {
+        max-width: 640px;
+        margin: 0 auto;
+        background: linear-gradient(180deg, #fdf6e3 0%, #faf0d7 100%);
+        border-radius: 8px;
+        padding: 60px 48px 50px;
+        box-shadow:
+          0 0 80px rgba(255, 220, 120, 0.3),
+          0 20px 60px rgba(0, 0, 0, 0.7);
+        position: relative;
+        color: #3a3226;
+        line-height: 2.2;
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+        animation: paperIn 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        background-image: repeating-linear-gradient(
+          transparent 0px,
+          transparent 38px,
+          rgba(200, 170, 120, 0.15) 39px,
+          transparent 40px
+        );
+      }
+      @keyframes paperIn {
+        from {
+          opacity: 0;
+          transform: translateY(40px) scale(0.96);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .letter-moon {
+        text-align: center;
+        font-size: 2.4rem;
+        margin-bottom: 16px;
+        filter: drop-shadow(0 0 20px rgba(255, 200, 100, 0.6));
+        animation: floatMoon 4s ease-in-out infinite;
+      }
+
+      .letter-title {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #5a4a2a;
+        letter-spacing: 6px;
+        margin-bottom: 8px;
+        font-family: "STKaiti", "KaiTi", "楷体", serif;
+      }
+
+      .letter-date {
+        text-align: center;
+        font-size: 0.85rem;
+        color: #9a8a6a;
+        letter-spacing: 3px;
+        margin-bottom: 36px;
+        font-family: "STKaiti", "KaiTi", "楷体", serif;
+      }
+
+      .letter-body p {
+        margin-bottom: 22px;
+        text-indent: 2em;
+        opacity: 0;
+        transform: translateY(15px);
+        animation: paragraphIn 0.9s ease forwards;
+        font-family: "STKaiti", "KaiTi", "楷体", "PingFang SC", serif;
+        color: #3a3226;
+      }
+      .letter-body p:nth-child(1) {
+        animation-delay: 0.3s;
+      }
+      .letter-body p:nth-child(2) {
+        animation-delay: 0.7s;
+      }
+      .letter-body p:nth-child(3) {
+        animation-delay: 1.1s;
+      }
+      .letter-body p:nth-child(4) {
+        animation-delay: 1.5s;
+      }
+      .letter-body p:nth-child(5) {
+        animation-delay: 1.9s;
+      }
+      .letter-body p:nth-child(6) {
+        animation-delay: 2.3s;
+      }
+      .letter-body p:nth-child(7) {
+        animation-delay: 2.7s;
+      }
+      .letter-body p:nth-child(8) {
+        animation-delay: 3.1s;
+      }
+      .letter-body p:nth-child(9) {
+        animation-delay: 3.5s;
+      }
+      .letter-body p:nth-child(10) {
+        animation-delay: 3.9s;
+      }
+      .letter-body p:nth-child(n + 11) {
+        animation-delay: 4.3s;
+      }
+
+      @keyframes paragraphIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .letter-sign {
+        text-align: right !important;
+        text-indent: 0 !important;
+        margin-top: 36px !important;
+        font-size: 1.1rem;
+        color: #5a4a2a;
+        font-family: "STKaiti", "KaiTi", "楷体", serif;
+      }
+
+      .letter-ps {
+        margin-top: 40px;
+        padding-top: 24px;
+        border-top: 1px dashed rgba(150, 120, 70, 0.4);
+        text-align: center;
+        font-size: 0.85rem;
+        color: #8a7a5a;
+        letter-spacing: 2px;
+        font-family: "STKaiti", "KaiTi", "楷体", serif;
+        font-style: italic;
+      }
+
+      @media (max-width: 640px) {
+        .letter-paper {
+          padding: 40px 24px 36px;
+          font-size: 0.95rem;
+          line-height: 2.1;
+        }
+        .letter-title {
+          font-size: 1.2rem;
+          letter-spacing: 3px;
+        }
+        .letter-moon {
+          font-size: 1.8rem;
+        }
+        .letter-btn {
+          padding: 14px 32px;
+          font-size: 0.95rem;
+        }
+      }
     </style>
   </head>
   <body>
@@ -716,7 +950,7 @@
     <!-- 音乐按钮 -->
     <div class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</div>
     <audio id="bgMusic" loop>
-      <!-- 把下面 src 换成你的音乐链接或本地文件，如 music/song.mp3 -->
+      <!-- 把这里换成你的音乐，如 music/song.mp3 -->
       <source src="music/song.mp3" type="audio/mpeg" />
     </audio>
 
@@ -752,6 +986,11 @@
           有惊喜
         </div>
       </div>
+
+      <!-- 长信按钮 -->
+      <div style="text-align: center; margin: 50px 0 20px">
+        <button class="letter-btn" onclick="openLetter()">💌 点开这封信</button>
+      </div>
     </div>
 
     <!-- 情书页 -->
@@ -770,6 +1009,44 @@
         <button class="nav-btn" id="nextBtn" onclick="nextLove()">
           下一张 →
         </button>
+      </div>
+    </div>
+
+    <!-- 长信全屏页 -->
+    <div class="letter-page" id="letterPage">
+      <div class="close-btn" onclick="closeLetter()">✕</div>
+
+      <div class="letter-paper">
+        <div class="letter-moon">🌕</div>
+        <div class="letter-title">写给我的女孩</div>
+        <div class="letter-date" id="letterDate"></div>
+
+        <div class="letter-body" id="letterBody">
+          <p>亲爱的：</p>
+          <p>
+            这是我们第一次一起过中秋。以前的中秋，我只是抬头看看月亮，觉得它挺圆的，然后继续低头做别的事。可今年不一样了，今年我想着的是——你也在看这同一轮月亮吗？你有没有觉得，它今晚特别亮？
+          </p>
+          <p>
+            我以前不知道，原来一个人的出现，可以让一个普通的节日变得那么不一样。月饼还是那个月饼，月亮还是那个月亮，可只要想到你，连空气都变甜了。
+          </p>
+          <p>
+            我记得第一次见你的时候，你笑起来的样子。那一刻我就在想，完了，这个人我要一直看下去。后来我们一起走过的每一天，都在证明我当时没有想错。
+          </p>
+          <p>
+            你有时候会问我，为什么喜欢你。我每次都答不上来，因为喜欢你的理由太多了，多到我不知道从哪一条说起。可能是你皱眉的样子，可能是你笑起来眼睛弯弯的样子，可能是你说“我饿了”时候的样子，可能是你安安静静靠在我身边的样子。每一条都算，每一条都不够。
+          </p>
+          <p>
+            我想和你过很多很多个中秋。今年是第一个，明年是第二个，十年后是第十个，等我们都老了，牙齿咬不动月饼了，我们还要一起坐在阳台上看月亮。那时候月亮还是这个月亮，可你已经是陪我走过大半辈子的人了。
+          </p>
+          <p>
+            我不太会说情话，但我想让你知道——你是我做过最好的决定，也是我以后每一天都想重复的决定。
+          </p>
+          <p>今晚的月亮很美，可你比月亮好看。</p>
+          <p>中秋快乐，我的女孩。</p>
+          <p class="letter-sign">—— 爱你的我</p>
+        </div>
+
+        <div class="letter-ps">P.S. 明年中秋，我还想和你一起过。</div>
       </div>
     </div>
 
@@ -904,7 +1181,6 @@
         sky.appendChild(star);
       }
 
-      // 流星
       function createShootingStar() {
         const s = document.createElement("div");
         s.className = "shooting-star";
@@ -954,14 +1230,12 @@
         document.getElementById("loveNumber").textContent =
           `${String(currentIndex + 1).padStart(2, "0")} / ${String(photos.length).padStart(2, "0")}`;
 
-        // 重新触发图片动画
         const photoEl = document.getElementById("lovePhoto");
         photoEl.style.animation = "none";
         photoEl.offsetHeight;
         photoEl.style.animation =
           "photoIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)";
 
-        // 打字机
         const textEl = document.getElementById("loveText");
         textEl.textContent = "";
         textEl.classList.remove("done");
@@ -983,7 +1257,6 @@
         document.getElementById("nextBtn").disabled =
           currentIndex === photos.length - 1;
 
-        // 花瓣环绕
         petalBurst();
       }
 
@@ -1000,7 +1273,6 @@
         }
       }
 
-      // 键盘
       document.addEventListener("keydown", (e) => {
         if (!document.getElementById("lovePage").classList.contains("active"))
           return;
@@ -1009,7 +1281,6 @@
         if (e.key === "Escape") closeLovePage();
       });
 
-      // 手机滑动
       let touchStartX = 0;
       document
         .getElementById("lovePage")
@@ -1045,7 +1316,6 @@
         }
       }
 
-      // 点击情书页时花瓣爆发
       function petalBurst() {
         const emojis = ["🌸", "💛", "✨", "🌙"];
         for (let i = 0; i < 20; i++) {
@@ -1055,7 +1325,6 @@
         }
       }
 
-      // 点击月亮花瓣雨
       document
         .getElementById("moonWrap")
         .addEventListener("click", startPetalRain);
@@ -1102,7 +1371,6 @@
           }, i * 40);
         }
 
-        // 弹一句告白
         setTimeout(() => {
           const confession = document.createElement("div");
           confession.style.cssText = `
@@ -1131,6 +1399,42 @@
           }, 3500);
         }, 1000);
       }
+
+      // ===== 长信页 =====
+      function openLetter() {
+        const page = document.getElementById("letterPage");
+        page.classList.add("active");
+        document.body.style.overflow = "hidden";
+        page.scrollTop = 0;
+
+        const now = new Date();
+        const y = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, "0");
+        const d = String(now.getDate()).padStart(2, "0");
+        document.getElementById("letterDate").textContent =
+          `${y} 年 ${m} 月 ${d} 日 · 中秋`;
+
+        const ps = document.querySelectorAll(".letter-body p");
+        ps.forEach((p) => {
+          p.style.animation = "none";
+          p.offsetHeight;
+          p.style.animation = "";
+        });
+      }
+
+      function closeLetter() {
+        document.getElementById("letterPage").classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (
+          e.key === "Escape" &&
+          document.getElementById("letterPage").classList.contains("active")
+        ) {
+          closeLetter();
+        }
+      });
     </script>
   </body>
 </html>
