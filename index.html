@@ -2,23 +2,34 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#05050f" />
     <title>我们的第一个中秋 🌕</title>
     <style>
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      html,
+      body {
+        width: 100%;
+        overflow-x: hidden;
       }
       body {
         background: #05050f;
         color: #fff;
         font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-        overflow-x: hidden;
         min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
       }
 
-      /* ===== 背景层：银河 ===== */
+      /* ===== 背景层 ===== */
       .sky {
         position: fixed;
         inset: 0;
@@ -33,7 +44,7 @@
       /* ===== 月亮 ===== */
       .moon-wrap {
         position: fixed;
-        bottom: 8vh;
+        bottom: 6vh;
         left: 50%;
         transform: translateX(-50%);
         z-index: 1;
@@ -46,12 +57,12 @@
           transform: translateX(-50%) translateY(0);
         }
         50% {
-          transform: translateX(-50%) translateY(-15px);
+          transform: translateX(-50%) translateY(-12px);
         }
       }
       .moon {
-        width: 160px;
-        height: 160px;
+        width: 140px;
+        height: 140px;
         border-radius: 50%;
         background: radial-gradient(
           circle at 30% 30%,
@@ -64,7 +75,6 @@
         box-shadow:
           0 0 60px 20px rgba(255, 240, 180, 0.5),
           0 0 120px 50px rgba(255, 220, 120, 0.25),
-          0 0 200px 100px rgba(255, 200, 100, 0.1),
           inset -20px -20px 50px rgba(200, 160, 60, 0.4);
         position: relative;
         animation: moonGlow 4s ease-in-out infinite;
@@ -75,14 +85,12 @@
           box-shadow:
             0 0 60px 20px rgba(255, 240, 180, 0.5),
             0 0 120px 50px rgba(255, 220, 120, 0.25),
-            0 0 200px 100px rgba(255, 200, 100, 0.1),
             inset -20px -20px 50px rgba(200, 160, 60, 0.4);
         }
         50% {
           box-shadow:
             0 0 80px 30px rgba(255, 240, 180, 0.7),
             0 0 160px 70px rgba(255, 220, 120, 0.35),
-            0 0 260px 130px rgba(255, 200, 100, 0.15),
             inset -20px -20px 50px rgba(200, 160, 60, 0.4);
         }
       }
@@ -95,14 +103,14 @@
         box-shadow: inset 2px 2px 6px rgba(150, 120, 50, 0.5);
       }
       .moon::before {
-        width: 28px;
-        height: 28px;
+        width: 24px;
+        height: 24px;
         top: 30%;
         left: 25%;
       }
       .moon::after {
-        width: 18px;
-        height: 18px;
+        width: 15px;
+        height: 15px;
         top: 55%;
         left: 60%;
       }
@@ -280,6 +288,10 @@
           border-color 0.5s ease;
         cursor: pointer;
         aspect-ratio: 1 / 1;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .photo-card:active {
+        transform: scale(0.97);
       }
       .photo-card::after {
         content: "";
@@ -292,6 +304,7 @@
         );
         opacity: 0;
         transition: opacity 0.5s;
+        pointer-events: none;
       }
       .photo-card:hover {
         transform: translateY(-8px) scale(1.03);
@@ -338,19 +351,16 @@
         padding: 4px 12px;
         background: rgba(0, 0, 0, 0.5);
         backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
         border: 1px solid rgba(255, 230, 150, 0.4);
         border-radius: 50px;
         font-size: 0.7rem;
         color: #ffeaa7;
         letter-spacing: 1px;
         z-index: 3;
-        opacity: 0;
-        transform: translateY(-8px);
-        transition: all 0.4s;
-      }
-      .photo-card:hover .photo-badge {
         opacity: 1;
         transform: translateY(0);
+        transition: all 0.4s;
       }
 
       .photo-caption {
@@ -363,43 +373,75 @@
         color: #ffeaa7;
         font-size: 0.85rem;
         letter-spacing: 1px;
-        opacity: 0;
-        transform: translateY(8px);
+        opacity: 1;
+        transform: translateY(0);
         transition: all 0.4s;
         pointer-events: none;
         z-index: 2;
       }
-      .photo-card:hover .photo-caption {
-        opacity: 1;
-        transform: translateY(0);
-      }
 
-      @media (max-width: 640px) {
-        .gallery {
-          grid-template-columns: repeat(2, 1fr);
-          gap: 10px;
+      /* ===== 音乐开场蒙层（解决手机自动播放）===== */
+      .enter-overlay {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle at 50% 40%, #1a1a3e 0%, #05050f 70%);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        cursor: pointer;
+        transition: opacity 0.8s ease;
+        padding: 24px;
+        text-align: center;
+      }
+      .enter-overlay.hide {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .enter-moon {
+        font-size: 4rem;
+        animation: floatMoon 3s ease-in-out infinite;
+        filter: drop-shadow(0 0 30px rgba(255, 220, 120, 0.8));
+      }
+      .enter-title {
+        font-size: 1.3rem;
+        color: #ffeaa7;
+        letter-spacing: 4px;
+        text-shadow: 0 0 30px rgba(255, 230, 150, 0.6);
+        font-family: "STKaiti", "KaiTi", "楷体", serif;
+      }
+      .enter-sub {
+        font-size: 0.85rem;
+        color: rgba(255, 230, 150, 0.6);
+        letter-spacing: 2px;
+        margin-top: -8px;
+      }
+      .enter-btn {
+        margin-top: 20px;
+        padding: 16px 40px;
+        background: linear-gradient(135deg, #fff4c2, #ffd966, #f5c842);
+        color: #1a1a2e;
+        border: none;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: bold;
+        letter-spacing: 3px;
+        cursor: pointer;
+        box-shadow: 0 0 50px rgba(255, 220, 120, 0.6);
+        animation: enterPulse 2s ease-in-out infinite;
+        font-family: inherit;
+      }
+      @keyframes enterPulse {
+        0%,
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 50px rgba(255, 220, 120, 0.6);
         }
-        .photo-card.span-6 {
-          grid-column: span 2;
-          aspect-ratio: 4 / 3;
-        }
-        .photo-card.span-3 {
-          grid-column: span 2;
-          aspect-ratio: 4 / 3;
-        }
-        .photo-card.span-2 {
-          grid-column: span 1;
-          aspect-ratio: 1 / 1;
-        }
-        .hero-main {
-          font-size: 1.3rem;
-        }
-        .hero-main .highlight {
-          font-size: 1.6rem;
-        }
-        .hero-sub {
-          font-size: 0.7rem;
-          letter-spacing: 4px;
+        50% {
+          transform: scale(1.05);
+          box-shadow: 0 0 80px rgba(255, 220, 120, 0.9);
         }
       }
 
@@ -418,66 +460,28 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 40px 24px;
+        padding: 60px 24px 40px;
         opacity: 0;
         transition: opacity 0.6s ease;
         overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
       }
       .love-page.active {
         display: flex;
         opacity: 1;
       }
 
-      .love-page::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image:
-          radial-gradient(
-            2px 2px at 20% 30%,
-            rgba(255, 255, 255, 0.5),
-            transparent
-          ),
-          radial-gradient(
-            2px 2px at 60% 70%,
-            rgba(255, 255, 255, 0.4),
-            transparent
-          ),
-          radial-gradient(
-            1px 1px at 80% 20%,
-            rgba(255, 255, 255, 0.6),
-            transparent
-          ),
-          radial-gradient(
-            1px 1px at 40% 80%,
-            rgba(255, 255, 255, 0.3),
-            transparent
-          ),
-          radial-gradient(
-            2px 2px at 90% 50%,
-            rgba(255, 255, 255, 0.4),
-            transparent
-          ),
-          radial-gradient(
-            1px 1px at 10% 60%,
-            rgba(255, 255, 255, 0.5),
-            transparent
-          );
-        animation: twinkle 3s infinite alternate;
-        pointer-events: none;
-      }
-
       .close-btn {
         position: fixed;
-        top: 20px;
-        right: 24px;
-        width: 44px;
-        height: 44px;
+        top: 16px;
+        right: 16px;
+        width: 46px;
+        height: 46px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.1);
         border: 1px solid rgba(255, 230, 150, 0.3);
         color: #ffeaa7;
-        font-size: 1.4rem;
+        font-size: 1.3rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -485,19 +489,20 @@
         z-index: 1001;
         transition: all 0.3s;
         backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
       }
-      .close-btn:hover {
-        background: rgba(255, 230, 150, 0.2);
-        transform: rotate(90deg);
-        box-shadow: 0 0 30px rgba(255, 220, 120, 0.5);
+      .close-btn:active {
+        transform: scale(0.9);
+        background: rgba(255, 230, 150, 0.25);
       }
 
       .love-photo-wrap {
         position: relative;
         width: 100%;
-        max-width: 360px;
+        max-width: 340px;
         aspect-ratio: 1 / 1;
-        margin-bottom: 28px;
+        margin-bottom: 24px;
+        flex-shrink: 0;
       }
       .love-photo-wrap::before {
         content: "";
@@ -510,12 +515,13 @@
           transparent 70%
         );
         animation: haloPulse 3s ease-in-out infinite;
+        pointer-events: none;
       }
       .love-photo {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 24px;
+        border-radius: 20px;
         box-shadow:
           0 0 60px rgba(255, 220, 120, 0.35),
           0 20px 60px rgba(0, 0, 0, 0.7),
@@ -547,29 +553,30 @@
         border-radius: 50px;
         font-size: 0.75rem;
         color: #ffeaa7;
-        letter-spacing: 3px;
-        margin-bottom: 20px;
-        text-transform: uppercase;
-        box-shadow: 0 0 24px rgba(255, 220, 120, 0.2);
+        letter-spacing: 2px;
+        margin-bottom: 16px;
+        flex-shrink: 0;
       }
 
       .love-number {
-        font-size: 0.8rem;
-        letter-spacing: 6px;
+        font-size: 0.75rem;
+        letter-spacing: 5px;
         color: rgba(255, 230, 150, 0.5);
-        margin-bottom: 16px;
+        margin-bottom: 14px;
+        flex-shrink: 0;
       }
 
       .love-text {
         max-width: 440px;
         text-align: center;
-        font-size: 1.1rem;
-        line-height: 2.2;
+        font-size: 1rem;
+        line-height: 2;
         color: #ffeaa7;
         letter-spacing: 1.5px;
         text-shadow: 0 0 24px rgba(255, 230, 150, 0.4);
-        min-height: 5rem;
-        padding: 0 20px;
+        min-height: 4rem;
+        padding: 0 16px;
+        flex-shrink: 0;
       }
       .love-text::after {
         content: "|";
@@ -583,43 +590,44 @@
 
       .nav-btns {
         display: flex;
-        gap: 16px;
-        margin-top: 40px;
+        gap: 12px;
+        margin-top: 32px;
         position: relative;
         z-index: 2;
+        flex-shrink: 0;
       }
       .nav-btn {
-        padding: 12px 26px;
+        padding: 14px 24px;
         border-radius: 50px;
-        background: rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.08);
         border: 1px solid rgba(255, 230, 150, 0.3);
         color: #ffeaa7;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         cursor: pointer;
         transition: all 0.3s;
         letter-spacing: 1px;
         backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        font-family: inherit;
+        min-width: 100px;
       }
-      .nav-btn:hover:not(:disabled) {
-        background: rgba(255, 230, 150, 0.15);
-        transform: translateY(-3px);
-        box-shadow: 0 8px 30px rgba(255, 220, 120, 0.3);
-        border-color: rgba(255, 230, 150, 0.6);
+      .nav-btn:active:not(:disabled) {
+        transform: scale(0.95);
+        background: rgba(255, 230, 150, 0.2);
       }
       .nav-btn:disabled {
         opacity: 0.25;
-        cursor: not-allowed;
       }
 
       /* ===== 音乐按钮 ===== */
       .music-btn {
         position: fixed;
-        top: 20px;
-        left: 24px;
+        top: 16px;
+        left: 16px;
         width: 44px;
         height: 44px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.1);
         border: 1px solid rgba(255, 230, 150, 0.3);
         color: #ffeaa7;
         display: flex;
@@ -629,11 +637,11 @@
         z-index: 100;
         transition: all 0.3s;
         backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
         font-size: 1.1rem;
       }
-      .music-btn:hover {
-        background: rgba(255, 230, 150, 0.2);
-        box-shadow: 0 0 24px rgba(255, 220, 120, 0.4);
+      .music-btn:active {
+        transform: scale(0.9);
       }
       .music-btn.playing {
         animation: musicPulse 1.5s ease-in-out infinite;
@@ -656,6 +664,7 @@
         z-index: 99;
         pointer-events: none;
         filter: drop-shadow(0 0 6px rgba(255, 220, 120, 0.5));
+        will-change: transform;
       }
       @keyframes fall {
         0% {
@@ -681,6 +690,7 @@
         cursor: pointer;
         display: inline-block;
         filter: drop-shadow(0 0 20px rgba(255, 100, 150, 0.6));
+        -webkit-tap-highlight-color: transparent;
       }
       @keyframes heartBeat {
         0%,
@@ -693,7 +703,7 @@
       }
       .ending-text {
         margin-top: 20px;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         color: rgba(255, 230, 150, 0.7);
         letter-spacing: 3px;
         line-height: 2;
@@ -701,8 +711,8 @@
 
       /* ===== 长信按钮 ===== */
       .letter-btn {
-        padding: 18px 48px;
-        font-size: 1.05rem;
+        padding: 16px 40px;
+        font-size: 1rem;
         letter-spacing: 3px;
         color: #1a1a2e;
         background: linear-gradient(135deg, #fff4c2, #ffd966, #f5c842);
@@ -717,31 +727,13 @@
         position: relative;
         overflow: hidden;
         font-family: inherit;
+        -webkit-tap-highlight-color: transparent;
       }
-      .letter-btn::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-          120deg,
-          transparent 30%,
-          rgba(255, 255, 255, 0.7) 50%,
-          transparent 70%
-        );
-        transform: translateX(-100%);
-        transition: transform 0.8s;
-      }
-      .letter-btn:hover {
-        transform: translateY(-4px) scale(1.05);
-        box-shadow:
-          0 0 60px rgba(255, 220, 120, 0.8),
-          0 12px 32px rgba(0, 0, 0, 0.5);
-      }
-      .letter-btn:hover::before {
-        transform: translateX(100%);
+      .letter-btn:active {
+        transform: scale(0.95);
       }
 
-      /* ===== 信纸页（深色 + 白字）===== */
+      /* ===== 信纸页 ===== */
       .letter-page {
         position: fixed;
         inset: 0;
@@ -754,42 +746,14 @@
         z-index: 2000;
         display: none;
         overflow-y: auto;
-        padding: 80px 20px 60px;
+        padding: 80px 16px 60px;
         opacity: 0;
         transition: opacity 0.6s ease;
+        -webkit-overflow-scrolling: touch;
       }
       .letter-page.active {
         display: block;
         opacity: 1;
-      }
-
-      .letter-page::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        background-image:
-          radial-gradient(
-            2px 2px at 15% 25%,
-            rgba(255, 255, 255, 0.5),
-            transparent
-          ),
-          radial-gradient(
-            1px 1px at 75% 15%,
-            rgba(255, 255, 255, 0.4),
-            transparent
-          ),
-          radial-gradient(
-            1px 1px at 45% 75%,
-            rgba(255, 255, 255, 0.3),
-            transparent
-          ),
-          radial-gradient(
-            2px 2px at 85% 60%,
-            rgba(255, 255, 255, 0.5),
-            transparent
-          );
-        pointer-events: none;
-        animation: twinkle 3s infinite alternate;
       }
 
       .letter-paper {
@@ -797,7 +761,7 @@
         margin: 0 auto;
         background: linear-gradient(180deg, #1e1e3a 0%, #16162a 100%);
         border-radius: 16px;
-        padding: 60px 48px 50px;
+        padding: 50px 36px 44px;
         box-shadow:
           0 0 80px rgba(255, 220, 120, 0.2),
           0 20px 60px rgba(0, 0, 0, 0.7),
@@ -808,12 +772,6 @@
         font-size: 1rem;
         letter-spacing: 0.5px;
         animation: paperIn 1s cubic-bezier(0.34, 1.56, 0.64, 1);
-        background-image: repeating-linear-gradient(
-          transparent 0px,
-          transparent 38px,
-          rgba(255, 230, 150, 0.06) 39px,
-          transparent 40px
-        );
       }
       @keyframes paperIn {
         from {
@@ -831,7 +789,6 @@
         font-size: 2.4rem;
         margin-bottom: 16px;
         filter: drop-shadow(0 0 20px rgba(255, 200, 100, 0.6));
-        animation: floatMoon 4s ease-in-out infinite;
       }
 
       .letter-title {
@@ -926,34 +883,248 @@
         font-style: italic;
       }
 
+      /* ===== 手机端适配 ===== */
       @media (max-width: 640px) {
-        .letter-paper {
-          padding: 40px 24px 36px;
-          font-size: 0.95rem;
-          line-height: 2.1;
+        .content {
+          padding: 40px 16px 220px;
         }
-        .letter-title {
-          font-size: 1.2rem;
+
+        .hero-sub {
+          font-size: 0.7rem;
+          letter-spacing: 5px;
+        }
+        .hero-main {
+          font-size: 1.4rem;
+          letter-spacing: 2px;
+        }
+        .hero-main .highlight {
+          font-size: 1.7rem;
+        }
+
+        .typewriter {
+          font-size: 0.9rem;
+          letter-spacing: 1px;
+          line-height: 1.9;
+        }
+
+        .divider {
+          margin: 30px 0;
+          font-size: 0.7rem;
           letter-spacing: 3px;
         }
-        .letter-moon {
-          font-size: 1.8rem;
+
+        .gallery {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px;
         }
+        .photo-card.span-6 {
+          grid-column: span 2;
+          aspect-ratio: 4 / 3;
+        }
+        .photo-card.span-3 {
+          grid-column: span 2;
+          aspect-ratio: 4 / 3;
+        }
+        .photo-card.span-2 {
+          grid-column: span 1;
+          aspect-ratio: 1 / 1;
+        }
+
+        .photo-badge {
+          font-size: 0.62rem;
+          padding: 3px 8px;
+          letter-spacing: 0.5px;
+          top: 8px;
+          left: 8px;
+        }
+        .photo-caption {
+          font-size: 0.75rem;
+          padding: 30px 10px 10px;
+          letter-spacing: 0.5px;
+        }
+
+        .moon {
+          width: 110px;
+          height: 110px;
+        }
+        .moon-wrap {
+          bottom: 4vh;
+        }
+        .moon::before {
+          width: 18px;
+          height: 18px;
+        }
+        .moon::after {
+          width: 12px;
+          height: 12px;
+        }
+        .moon-halo {
+          inset: -25px;
+        }
+
+        .music-btn {
+          width: 40px;
+          height: 40px;
+          font-size: 1rem;
+          top: 12px;
+          left: 12px;
+        }
+        .close-btn {
+          width: 42px;
+          height: 42px;
+          font-size: 1.2rem;
+          top: 12px;
+          right: 12px;
+        }
+
+        .love-page {
+          padding: 70px 20px 40px;
+        }
+        .love-photo-wrap {
+          max-width: 280px;
+          margin-bottom: 20px;
+        }
+        .love-photo {
+          border-radius: 18px;
+        }
+        .love-badge {
+          font-size: 0.68rem;
+          padding: 5px 14px;
+          letter-spacing: 1.5px;
+          margin-bottom: 12px;
+        }
+        .love-number {
+          font-size: 0.7rem;
+          letter-spacing: 4px;
+          margin-bottom: 10px;
+        }
+        .love-text {
+          font-size: 0.92rem;
+          line-height: 1.95;
+          letter-spacing: 1px;
+          padding: 0 8px;
+        }
+        .nav-btns {
+          gap: 10px;
+          margin-top: 26px;
+        }
+        .nav-btn {
+          padding: 12px 18px;
+          font-size: 0.82rem;
+          min-width: 90px;
+        }
+
+        .ending {
+          padding: 40px 16px 16px;
+          margin-top: 30px;
+        }
+        .ending-heart {
+          font-size: 2.6rem;
+        }
+        .ending-text {
+          font-size: 0.82rem;
+          letter-spacing: 2px;
+        }
+
         .letter-btn {
           padding: 14px 32px;
+          font-size: 0.92rem;
+          letter-spacing: 2px;
+        }
+
+        .letter-page {
+          padding: 70px 12px 40px;
+        }
+        .letter-paper {
+          padding: 40px 22px 32px;
           font-size: 0.95rem;
+          line-height: 2.05;
+          border-radius: 14px;
+        }
+        .letter-title {
+          font-size: 1.15rem;
+          letter-spacing: 4px;
+        }
+        .letter-date {
+          font-size: 0.75rem;
+          letter-spacing: 2px;
+          margin-bottom: 28px;
+        }
+        .letter-body p {
+          margin-bottom: 18px;
+        }
+        .letter-sign {
+          font-size: 1rem;
+          margin-top: 28px !important;
+        }
+        .letter-ps {
+          font-size: 0.78rem;
+          margin-top: 30px;
+          padding-top: 18px;
+        }
+        .letter-moon {
+          font-size: 2rem;
+        }
+
+        .enter-moon {
+          font-size: 3rem;
+        }
+        .enter-title {
+          font-size: 1.1rem;
+          letter-spacing: 3px;
+        }
+        .enter-sub {
+          font-size: 0.78rem;
+          letter-spacing: 1.5px;
+        }
+        .enter-btn {
+          padding: 14px 32px;
+          font-size: 0.92rem;
+          letter-spacing: 2px;
+        }
+      }
+
+      /* 超小屏（iPhone SE 等） */
+      @media (max-width: 380px) {
+        .hero-main {
+          font-size: 1.2rem;
+        }
+        .hero-main .highlight {
+          font-size: 1.5rem;
+        }
+        .love-photo-wrap {
+          max-width: 240px;
+        }
+        .love-text {
+          font-size: 0.88rem;
+        }
+        .moon {
+          width: 90px;
+          height: 90px;
+        }
+        .nav-btn {
+          padding: 10px 14px;
+          font-size: 0.78rem;
+          min-width: 80px;
         }
       }
     </style>
   </head>
   <body>
+    <!-- 手机端音乐自动播放兜底：进入蒙层 -->
+    <div class="enter-overlay" id="enterOverlay" onclick="enterSite()">
+      <div class="enter-moon">🌕</div>
+      <div class="enter-title">我们的第一个中秋</div>
+      <div class="enter-sub">点一下，开启这份礼物</div>
+      <button class="enter-btn">💛 进入</button>
+    </div>
+
     <!-- 背景天空 -->
     <div class="sky" id="sky"></div>
 
     <!-- 音乐按钮 -->
     <div class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</div>
-    <audio id="bgMusic" loop preload="auto" playsinline>
-      <!-- 把这里换成你的音乐路径，如 music/song.mp3 -->
+    <audio id="bgMusic" loop preload="auto" playsinline webkit-playsinline>
       <source src="music/song.mp3" type="audio/mpeg" />
     </audio>
 
@@ -965,7 +1136,6 @@
 
     <!-- 内容 -->
     <div class="content">
-      <!-- 标题 -->
       <div class="hero-title">
         <div class="hero-sub">2026 · 中秋</div>
         <div class="hero-main">
@@ -973,15 +1143,12 @@
         </div>
       </div>
 
-      <!-- 打字机 -->
       <div class="typewriter" id="typewriter"></div>
 
       <div class="divider">✦ 我们的回忆 ✦</div>
 
-      <!-- 图片网格 -->
       <div class="gallery" id="gallery"></div>
 
-      <!-- 结尾 -->
       <div class="ending">
         <div class="ending-heart" onclick="heartExplosion()">❤️</div>
         <div class="ending-text">
@@ -990,8 +1157,7 @@
         </div>
       </div>
 
-      <!-- 长信按钮 -->
-      <div style="text-align: center; margin: 50px 0 20px">
+      <div style="text-align: center; margin: 40px 0 20px">
         <button class="letter-btn" onclick="openLetter()">💌 点开这封信</button>
       </div>
     </div>
@@ -1055,7 +1221,7 @@
 
     <script>
       // ============================================
-      // ★★★ 改这里：15 张图 + 情话 + "第一次"标签 ★★★
+      // ★★★ 改这里：15 张图 + 情话 + 标签 ★★★
       // ============================================
       const photos = [
         {
@@ -1135,10 +1301,12 @@
         },
       ];
 
-      // ============================================
-      // 以下不用改
-      // ============================================
+      // ===== 是否是手机 =====
+      const isMobile =
+        /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
+        window.innerWidth < 768;
 
+      // ===== 布局 =====
       const layoutClasses = [
         "span-6",
         "span-3",
@@ -1157,7 +1325,6 @@
         "span-2",
       ];
 
-      // 生成卡片
       const gallery = document.getElementById("gallery");
       photos.forEach((photo, index) => {
         const card = document.createElement("div");
@@ -1166,14 +1333,15 @@
         card.innerHTML = `
       <img src="${photo.src}" alt="" loading="lazy">
       <div class="photo-badge">${photo.badge}</div>
-      <div class="photo-caption">${photo.text.substring(0, 20)}...</div>
+      <div class="photo-caption">${photo.text.substring(0, 18)}...</div>
     `;
         gallery.appendChild(card);
       });
 
-      // ===== 星星 & 流星 =====
+      // ===== 星星 =====
       const sky = document.getElementById("sky");
-      for (let i = 0; i < 160; i++) {
+      const starCount = isMobile ? 70 : 160;
+      for (let i = 0; i < starCount; i++) {
         const star = document.createElement("div");
         star.className = "star";
         star.style.left = Math.random() * 100 + "%";
@@ -1184,6 +1352,7 @@
         sky.appendChild(star);
       }
 
+      // 流星（手机端频率降低）
       function createShootingStar() {
         const s = document.createElement("div");
         s.className = "shooting-star";
@@ -1192,24 +1361,30 @@
         document.body.appendChild(s);
         setTimeout(() => s.remove(), 1500);
       }
-      setInterval(createShootingStar, 3500);
+      setInterval(createShootingStar, isMobile ? 6000 : 3500);
 
       // ===== 打字机 =====
       const text = "这是我们第一次一起过中秋，我想把它做成永远的回忆。";
       const el = document.getElementById("typewriter");
       let i = 0;
-      function type() {
-        if (i < text.length) {
-          el.textContent += text.charAt(i);
-          i++;
-          setTimeout(type, 120);
-        } else {
-          el.classList.add("done");
-        }
-      }
-      setTimeout(type, 1500);
+      let typeStarted = false;
 
-      // ===== 情书页逻辑 =====
+      function startTyping() {
+        if (typeStarted) return;
+        typeStarted = true;
+        function type() {
+          if (i < text.length) {
+            el.textContent += text.charAt(i);
+            i++;
+            setTimeout(type, 120);
+          } else {
+            el.classList.add("done");
+          }
+        }
+        type();
+      }
+
+      // ===== 情书页 =====
       let currentIndex = 0;
       let typeTimer = null;
 
@@ -1249,7 +1424,7 @@
           if (j < fullText.length) {
             textEl.textContent += fullText.charAt(j);
             j++;
-            typeTimer = setTimeout(typeLove, 80);
+            typeTimer = setTimeout(typeLove, 70);
           } else {
             textEl.classList.add("done");
           }
@@ -1260,7 +1435,8 @@
         document.getElementById("nextBtn").disabled =
           currentIndex === photos.length - 1;
 
-        petalBurst();
+        // 手机端花瓣更少
+        petalBurst(isMobile ? 10 : 20);
       }
 
       function prevLove() {
@@ -1284,19 +1460,40 @@
         if (e.key === "Escape") closeLovePage();
       });
 
-      let touchStartX = 0;
-      document
-        .getElementById("lovePage")
-        .addEventListener("touchstart", (e) => {
+      // 手机滑动翻页（加阈值 + 防误触）
+      let touchStartX = 0,
+        touchStartY = 0,
+        touchMoved = false;
+      document.getElementById("lovePage").addEventListener(
+        "touchstart",
+        (e) => {
           touchStartX = e.changedTouches[0].screenX;
-        });
-      document.getElementById("lovePage").addEventListener("touchend", (e) => {
-        const diff = e.changedTouches[0].screenX - touchStartX;
-        if (Math.abs(diff) > 50) {
-          if (diff > 0) prevLove();
-          else nextLove();
-        }
-      });
+          touchStartY = e.changedTouches[0].screenY;
+          touchMoved = false;
+        },
+        { passive: true },
+      );
+      document.getElementById("lovePage").addEventListener(
+        "touchmove",
+        () => {
+          touchMoved = true;
+        },
+        { passive: true },
+      );
+      document.getElementById("lovePage").addEventListener(
+        "touchend",
+        (e) => {
+          if (!touchMoved) return;
+          const diffX = e.changedTouches[0].screenX - touchStartX;
+          const diffY = e.changedTouches[0].screenY - touchStartY;
+          // 只有水平方向滑动超过 60px 且大于竖直位移时才翻页
+          if (Math.abs(diffX) > 60 && Math.abs(diffX) > Math.abs(diffY)) {
+            if (diffX > 0) prevLove();
+            else nextLove();
+          }
+        },
+        { passive: true },
+      );
 
       // ===== 花瓣 =====
       function createPetal(emoji) {
@@ -1312,19 +1509,20 @@
 
       function startPetalRain() {
         const emojis = ["🌸", "💛", "🌙", "⭐", "🥮", "❤️", "✨"];
-        for (let i = 0; i < 80; i++) {
+        const count = isMobile ? 40 : 80;
+        for (let i = 0; i < count; i++) {
           setTimeout(() => {
             createPetal(emojis[Math.floor(Math.random() * emojis.length)]);
-          }, i * 60);
+          }, i * 70);
         }
       }
 
-      function petalBurst() {
+      function petalBurst(count) {
         const emojis = ["🌸", "💛", "✨", "🌙"];
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < count; i++) {
           setTimeout(() => {
             createPetal(emojis[Math.floor(Math.random() * emojis.length)]);
-          }, i * 40);
+          }, i * 50);
         }
       }
 
@@ -1332,7 +1530,7 @@
         .getElementById("moonWrap")
         .addEventListener("click", startPetalRain);
 
-      // ===== 音乐（自动播放 + 用户交互兜底）=====
+      // ===== 音乐 =====
       const bgMusic = document.getElementById("bgMusic");
       const musicBtn = document.getElementById("musicBtn");
       let musicPlaying = false;
@@ -1349,30 +1547,55 @@
       }
 
       function tryPlayMusic() {
-        bgMusic.volume = 0.6;
+        bgMusic.volume = 0.55;
         const p = bgMusic.play();
         if (p && p.then) {
           p.then(() => setMusicUI(true)).catch(() => setMusicUI(false));
         }
       }
 
-      // 页面加载后先尝试自动播放
-      window.addEventListener("load", () => {
-        tryPlayMusic();
-      });
+      // 进入蒙层点击后：隐藏蒙层 + 播放音乐 + 开始打字
+      let entered = false;
+      function enterSite() {
+        if (entered) return;
+        entered = true;
+        const overlay = document.getElementById("enterOverlay");
+        overlay.classList.add("hide");
+        setTimeout(() => overlay.remove(), 900);
 
-      // 若被浏览器拦截，则在用户第一次点击/触摸/按键时自动播放
+        // 关键：用户点击后才播放音乐（绕过手机限制）
+        tryPlayMusic();
+
+        // 开始打字机
+        startTyping();
+      }
+
+      // 桌面端：如果用户没有点蒙层，2 秒后自动隐藏（桌面可以自动播放）
+      if (!isMobile) {
+        setTimeout(() => {
+          if (!entered) {
+            const overlay = document.getElementById("enterOverlay");
+            if (overlay) {
+              overlay.classList.add("hide");
+              setTimeout(() => overlay.remove(), 900);
+            }
+            entered = true;
+            tryPlayMusic();
+            startTyping();
+          }
+        }, 800);
+      }
+
+      // 兜底：如果用户点击了页面其他区域，也触发播放
       function firstInteractionPlay() {
         if (!musicPlaying) tryPlayMusic();
+        if (!typeStarted) startTyping();
         document.removeEventListener("click", firstInteractionPlay);
         document.removeEventListener("touchstart", firstInteractionPlay);
-        document.removeEventListener("keydown", firstInteractionPlay);
       }
       document.addEventListener("click", firstInteractionPlay);
       document.addEventListener("touchstart", firstInteractionPlay);
-      document.addEventListener("keydown", firstInteractionPlay);
 
-      // 点击按钮：开 / 关
       function toggleMusic() {
         if (musicPlaying) {
           bgMusic.pause();
@@ -1382,10 +1605,19 @@
         }
       }
 
-      // ===== 结尾爱心爆炸 =====
+      // 页面进入后台时暂停（省电）
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden && musicPlaying) {
+          bgMusic.pause();
+          setMusicUI(false);
+        }
+      });
+
+      // ===== 结尾爱心 =====
       function heartExplosion() {
         const emojis = ["❤️", "💛", "💖", "✨", "🌙", "🌸"];
-        for (let i = 0; i < 60; i++) {
+        const count = isMobile ? 35 : 60;
+        for (let i = 0; i < count; i++) {
           setTimeout(() => {
             const p = document.createElement("div");
             p.className = "petal";
@@ -1403,17 +1635,21 @@
           confession.style.cssText = `
         position: fixed; top: 50%; left: 50%;
         transform: translate(-50%, -50%) scale(0);
-        font-size: 1.6rem; color: #ffeaa7;
+        font-size: ${isMobile ? "1.15rem" : "1.6rem"};
+        color: #ffeaa7;
         text-align: center; line-height: 2;
         text-shadow: 0 0 40px rgba(255,220,120,0.9);
         z-index: 9999; pointer-events: none;
         transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-        letter-spacing: 4px;
-        padding: 20px;
-        background: rgba(10,10,20,0.6);
+        letter-spacing: 3px;
+        padding: 20px 24px;
+        background: rgba(10,10,20,0.75);
         border-radius: 20px;
         backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(255,230,150,0.3);
+        max-width: 88vw;
+        font-family: "STKaiti", "KaiTi", "楷体", serif;
       `;
           confession.innerHTML = `这是我们第一个中秋<br>以后每一个都陪你过 🌕`;
           document.body.appendChild(confession);
