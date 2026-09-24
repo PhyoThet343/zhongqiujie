@@ -380,7 +380,7 @@
         z-index: 2;
       }
 
-      /* ===== 音乐开场蒙层（解决手机自动播放）===== */
+      /* ===== 进入蒙层 ===== */
       .enter-overlay {
         position: fixed;
         inset: 0;
@@ -677,7 +677,7 @@
         }
       }
 
-      /* ===== 结尾彩蛋 ===== */
+      /* ===== 结尾 ===== */
       .ending {
         text-align: center;
         padding: 60px 20px 20px;
@@ -768,10 +768,20 @@
           0 0 0 1px rgba(255, 230, 150, 0.25);
         position: relative;
         color: #ffffff;
-        line-height: 2.2;
+        line-height: 40px;
         font-size: 1rem;
         letter-spacing: 0.5px;
         animation: paperIn 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        background-image: repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 39px,
+          rgba(255, 230, 150, 0.13) 39px,
+          rgba(255, 230, 150, 0.13) 40px
+        );
+        background-size: 100% 40px;
+        background-position: 0 12px;
+        background-attachment: local;
       }
       @keyframes paperIn {
         from {
@@ -800,6 +810,7 @@
         margin-bottom: 8px;
         font-family: "STKaiti", "KaiTi", "楷体", serif;
         text-shadow: 0 0 24px rgba(255, 220, 120, 0.5);
+        line-height: 1.6;
       }
 
       .letter-date {
@@ -809,11 +820,13 @@
         letter-spacing: 3px;
         margin-bottom: 36px;
         font-family: "STKaiti", "KaiTi", "楷体", serif;
+        line-height: 1.6;
       }
 
       .letter-body p {
-        margin-bottom: 22px;
+        margin-bottom: 20px;
         text-indent: 2em;
+        line-height: 40px;
         opacity: 0;
         transform: translateY(15px);
         animation: paragraphIn 0.9s ease forwards;
@@ -869,6 +882,7 @@
         font-size: 1.1rem;
         color: #ffeaa7;
         font-family: "STKaiti", "KaiTi", "楷体", serif;
+        line-height: 1.8;
       }
 
       .letter-ps {
@@ -881,6 +895,7 @@
         letter-spacing: 2px;
         font-family: "STKaiti", "KaiTi", "楷体", serif;
         font-style: italic;
+        line-height: 1.8;
       }
 
       /* ===== 手机端适配 ===== */
@@ -1036,34 +1051,42 @@
           padding: 70px 12px 40px;
         }
         .letter-paper {
-          padding: 40px 22px 32px;
+          padding: 36px 22px 32px;
           font-size: 0.95rem;
-          line-height: 2.05;
+          line-height: 36px;
           border-radius: 14px;
+          background-size: 100% 36px;
+          background-position: 0 10px;
         }
         .letter-title {
           font-size: 1.15rem;
           letter-spacing: 4px;
+          line-height: 1.5;
         }
         .letter-date {
           font-size: 0.75rem;
           letter-spacing: 2px;
           margin-bottom: 28px;
+          line-height: 1.5;
         }
         .letter-body p {
-          margin-bottom: 18px;
+          margin-bottom: 16px;
+          line-height: 36px;
         }
         .letter-sign {
           font-size: 1rem;
           margin-top: 28px !important;
+          line-height: 1.6;
         }
         .letter-ps {
           font-size: 0.78rem;
           margin-top: 30px;
           padding-top: 18px;
+          line-height: 1.6;
         }
         .letter-moon {
           font-size: 2rem;
+          line-height: 1.4;
         }
 
         .enter-moon {
@@ -1084,7 +1107,6 @@
         }
       }
 
-      /* 超小屏（iPhone SE 等） */
       @media (max-width: 380px) {
         .hero-main {
           font-size: 1.2rem;
@@ -1111,7 +1133,7 @@
     </style>
   </head>
   <body>
-    <!-- 手机端音乐自动播放兜底：进入蒙层 -->
+    <!-- 进入蒙层 -->
     <div class="enter-overlay" id="enterOverlay" onclick="enterSite()">
       <div class="enter-moon">🌕</div>
       <div class="enter-title">我们的第一个中秋</div>
@@ -1301,7 +1323,7 @@
         },
       ];
 
-      // ===== 是否是手机 =====
+      // ===== 是否手机 =====
       const isMobile =
         /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
         window.innerWidth < 768;
@@ -1352,7 +1374,7 @@
         sky.appendChild(star);
       }
 
-      // 流星（手机端频率降低）
+      // 流星
       function createShootingStar() {
         const s = document.createElement("div");
         s.className = "shooting-star";
@@ -1435,7 +1457,6 @@
         document.getElementById("nextBtn").disabled =
           currentIndex === photos.length - 1;
 
-        // 手机端花瓣更少
         petalBurst(isMobile ? 10 : 20);
       }
 
@@ -1460,7 +1481,7 @@
         if (e.key === "Escape") closeLovePage();
       });
 
-      // 手机滑动翻页（加阈值 + 防误触）
+      // 手机滑动翻页
       let touchStartX = 0,
         touchStartY = 0,
         touchMoved = false;
@@ -1486,7 +1507,6 @@
           if (!touchMoved) return;
           const diffX = e.changedTouches[0].screenX - touchStartX;
           const diffY = e.changedTouches[0].screenY - touchStartY;
-          // 只有水平方向滑动超过 60px 且大于竖直位移时才翻页
           if (Math.abs(diffX) > 60 && Math.abs(diffX) > Math.abs(diffY)) {
             if (diffX > 0) prevLove();
             else nextLove();
@@ -1554,23 +1574,21 @@
         }
       }
 
-      // 进入蒙层点击后：隐藏蒙层 + 播放音乐 + 开始打字
+      // 进入蒙层
       let entered = false;
       function enterSite() {
         if (entered) return;
         entered = true;
         const overlay = document.getElementById("enterOverlay");
-        overlay.classList.add("hide");
-        setTimeout(() => overlay.remove(), 900);
-
-        // 关键：用户点击后才播放音乐（绕过手机限制）
+        if (overlay) {
+          overlay.classList.add("hide");
+          setTimeout(() => overlay.remove(), 900);
+        }
         tryPlayMusic();
-
-        // 开始打字机
         startTyping();
       }
 
-      // 桌面端：如果用户没有点蒙层，2 秒后自动隐藏（桌面可以自动播放）
+      // 桌面端自动进入
       if (!isMobile) {
         setTimeout(() => {
           if (!entered) {
@@ -1586,7 +1604,7 @@
         }, 800);
       }
 
-      // 兜底：如果用户点击了页面其他区域，也触发播放
+      // 兜底
       function firstInteractionPlay() {
         if (!musicPlaying) tryPlayMusic();
         if (!typeStarted) startTyping();
@@ -1605,7 +1623,7 @@
         }
       }
 
-      // 页面进入后台时暂停（省电）
+      // 切后台暂停
       document.addEventListener("visibilitychange", () => {
         if (document.hidden && musicPlaying) {
           bgMusic.pause();
